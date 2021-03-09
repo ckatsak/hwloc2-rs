@@ -1,5 +1,5 @@
 use libc::{c_int, c_uint, c_ulonglong, c_char, c_void, c_float, c_ushort, c_uchar};
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
 use std::fmt;
 
 use ffi::ObjectType;
@@ -222,29 +222,23 @@ impl TopologyObject {
 
 impl fmt::Display for TopologyObject {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let type_str = CString::new("").unwrap();
-        let type_str_ptr = type_str.into_raw();
+		let mut buf_type = [0; 64];
+		let mut buf_attr = [0; 2048];
 
-        let attr_str = CString::new("").unwrap();
-        let attr_str_ptr = attr_str.into_raw();
-
-        let separator = CString::new("  ").unwrap();
-        let separator_ptr = separator.into_raw();
+		let separator_ptr = b"  \0".as_ptr() as * const c_char;
 
         unsafe {
-            ffi::hwloc_obj_type_snprintf(type_str_ptr, 64, &*self as *const TopologyObject, 0);
-            ffi::hwloc_obj_attr_snprintf(attr_str_ptr,
+            ffi::hwloc_obj_type_snprintf(buf_type.as_mut_ptr(), 64, &*self as *const TopologyObject, 0);
+            ffi::hwloc_obj_attr_snprintf(buf_attr.as_mut_ptr(),
                                          2048,
                                          &*self as *const TopologyObject,
                                          separator_ptr,
                                          0);
 
-            CString::from_raw(separator_ptr);
-
             write!(f,
                    "{} ({})",
-                   CString::from_raw(type_str_ptr).to_str().unwrap(),
-                   CString::from_raw(attr_str_ptr).to_str().unwrap())
+                   CStr::from_ptr(buf_type.as_ptr()).to_str().unwrap(),
+                   CStr::from_ptr(buf_attr.as_ptr()).to_str().unwrap())
         }
     }
 }
