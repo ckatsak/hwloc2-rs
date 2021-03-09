@@ -1,10 +1,10 @@
 use ffi;
 use libc::c_char;
-use std::{fmt, ptr};
-use std::ffi::CStr;
-use std::ops::Not;
 use std::clone::Clone;
+use std::ffi::CStr;
 use std::iter::FromIterator;
+use std::ops::Not;
+use std::{fmt, ptr};
 
 pub enum IntHwlocBitmap {}
 
@@ -381,7 +381,9 @@ impl fmt::Display for Bitmap {
         let mut result: *mut c_char = ptr::null_mut();
         unsafe {
             ffi::hwloc_bitmap_list_asprintf(&mut result, self.bitmap);
-            write!(f, "{}", CStr::from_ptr(result).to_str().unwrap())
+            let x = write!(f, "{}", CStr::from_ptr(result).to_str().unwrap());
+            libc::free(result as _);
+            x
         }
     }
 }
@@ -391,7 +393,9 @@ impl fmt::Debug for Bitmap {
         let mut result: *mut c_char = ptr::null_mut();
         unsafe {
             ffi::hwloc_bitmap_list_asprintf(&mut result, self.bitmap);
-            write!(f, "{}", CStr::from_ptr(result).to_str().unwrap())
+            let x = write!(f, "{}", CStr::from_ptr(result).to_str().unwrap());
+            libc::free(result as _);
+            x
         }
     }
 }
@@ -625,5 +629,4 @@ mod tests {
         let bitmap = (1..10).collect::<Bitmap>();
         assert_eq!("1-9", format!("{}", bitmap));
     }
-
 }
