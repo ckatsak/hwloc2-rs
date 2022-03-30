@@ -1,10 +1,13 @@
-use bitmap::IntHwlocBitmap;
-use libc::{c_char, c_int, c_uchar, c_uint, c_ulong, c_void, size_t};
-use num::{FromPrimitive, ToPrimitive};
 use std::cmp::{Ordering, PartialOrd};
-use support::TopologySupport;
-use topology_object::{TopologyObject, TopologyObjectAttributes};
-use {pid_t, pthread_t};
+
+use num::{FromPrimitive, ToPrimitive};
+
+use libc::{c_char, c_int, c_uchar, c_uint, c_ulong, c_void, size_t};
+use libc::{pid_t, pthread_t};
+
+use crate::bitmap::IntHwlocBitmap;
+use crate::support::TopologySupport;
+use crate::topology_object::{TopologyObject, TopologyObjectAttributes};
 
 bitflags! {
     /// Process/Thread binding flags.

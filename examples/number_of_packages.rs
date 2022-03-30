@@ -1,6 +1,4 @@
-extern crate hwloc;
-
-use hwloc::{Topology, ObjectType, TypeDepthError};
+use hwloc2::{ObjectType, Topology, TypeDepthError};
 
 /// Prints the number of packages.
 fn main() {

@@ -1,11 +1,10 @@
-use libc::{c_char, c_float, c_int, c_uchar, c_uint, c_ulonglong, c_ushort, c_void};
 use std::ffi::{CStr, CString};
 use std::fmt;
 
-use ffi;
-use ffi::ObjectType;
+use libc::{c_char, c_float, c_int, c_uchar, c_uint, c_ulonglong, c_ushort, c_void};
 
-use bitmap::{CpuSet, IntHwlocBitmap, NodeSet};
+use crate::bitmap::{CpuSet, IntHwlocBitmap, NodeSet};
+use crate::ffi::{self, ObjectType};
 
 #[repr(C)]
 pub struct TopologyObject {
@@ -229,7 +228,6 @@ impl fmt::Debug for TopologyObject {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         fmt::Display::fmt(self, f)
     }
-
 }
 
 impl fmt::Display for TopologyObject {

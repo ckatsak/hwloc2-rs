@@ -1,10 +1,12 @@
-use ffi;
-use libc::c_char;
 use std::clone::Clone;
 use std::ffi::CStr;
 use std::iter::FromIterator;
 use std::ops::Not;
 use std::{fmt, ptr};
+
+use libc::c_char;
+
+use crate::ffi;
 
 pub enum IntHwlocBitmap {}
 

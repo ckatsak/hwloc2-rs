@@ -1,5 +1,6 @@
-use libc::c_uchar;
 use std::fmt;
+
+use libc::c_uchar;
 
 #[repr(C)]
 pub struct TopologySupport {
